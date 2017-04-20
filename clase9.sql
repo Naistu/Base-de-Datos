@@ -18,3 +18,10 @@ SELECT rating, AVG(`length`)
 FROM film
 GROUP BY rating
 HAVING AVG(`length`) > (SELECT AVG(`length`) FROM film)
+
+SELECT DISTINCT rating, (SELECT COUNT(*) FROM film f3 WHERE f3.rating = f1.rating) AS total
+FROM film f1
+WHERE (SELECT COUNT(*) FROM film f2 WHERE f2.rating = f1.rating) < 195
+
+
+
