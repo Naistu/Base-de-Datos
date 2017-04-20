@@ -5,7 +5,7 @@ SELECT title FROM film
 WHERE title LIKE 'A%' OR title LIKE 'S%';
 
 SELECT f1.title, f2.title, f1.`length`
-	FROM film f1, film f2
+FROM film f1, film f2
 WHERE f1.`length` = f2.`length` AND f1.film_id < f2.film_id
 ORDER BY 1;
 
@@ -43,5 +43,16 @@ AND address.city_id = city.city_id
 AND city.country_id = country.country_id;
 
 -- ejercicio 7
-SELECT title, rating FROM film
-WHERE 
+SELECT f1.title, f2.title, f1.rating, f2.rating
+FROM film f1, film f2
+WHERE f1.rating = f2.rating
+AND f1.film_id < f2.film_id
+ORDER BY 1;
+
+-- ejercicio 8
+SELECT title, first_name, last_name
+FROM film, staff, store, inventory
+WHERE store.store_id = 2
+AND inventory.store_id = store.store_id
+AND store.address_id = staff.address_id
+AND film.film_id = inventory.film_id 
