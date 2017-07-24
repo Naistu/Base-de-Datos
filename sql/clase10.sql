@@ -1,7 +1,7 @@
 EXPLAIN SELECT *
 FROM film
 INNER JOIN `language` 
-ON film.language_id = `language`.language_id;
+USING (language_id)
 
 -- sin join
 

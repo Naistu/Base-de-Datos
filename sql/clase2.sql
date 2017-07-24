@@ -18,7 +18,7 @@ CREATE TABLE film_actor(
 	actor_id INT(20) ,
 	film_id INT(20),
 	last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	FOREIGN KEY (actor_id) REFERENCES actor(actor_id),
+		
 	FOREIGN KEY (film_id) REFERENCES film(film_id),
 	PRIMARY KEY (film_id, actor_id)
 	);	

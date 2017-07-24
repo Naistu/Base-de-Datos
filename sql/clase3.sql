@@ -21,7 +21,7 @@ AND city.country_id = country.country_id;
 SELECT title,special_features,rental_rate, name
 FROM film, film_category, category
 WHERE film.film_id = film_category.film_id
-	AND film_category.category_id = category.category_id
+AND film_category.category_id = category.category_id
 ORDER BY rental_rate DESC, special_features
 LIMIT 3; -- cantidad de rows q me va a tirar
 
@@ -29,13 +29,13 @@ SELECT special_features, title
 FROM film
 WHERE special_features LIKE '%Trailers%';
 
-SELECT title, rental_rate *15 AS "En las monedas del pueblo"
+SELECT title, rental_rate *15 AS "En los pesos de macri"
 FROM film
-ORDER BY `En las monedas del pueblo` DESC;
+ORDER BY `En los pesos de macri` DESC;
 
 SELECT name FROM category
 WHERE name LIKE 'A%' OR name LIKE 'M%'
 UNION
 SELECT name FROM category
-WHERE name LIKE 'A%' OR name LIKE 'S%'
+WHERE name LIKE 'T%' OR name LIKE 'S%'
 

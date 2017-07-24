@@ -1,4 +1,4 @@
-SELECT  DISTINCT first_name
+SELECT DISTINCT first_name
 FROM customer, payment
 WHERE customer.customer_id = payment.customer_id
 AND payment.amount = 0.99
@@ -30,7 +30,7 @@ SELECT title, `length`
 FROM film f1
 WHERE NOT EXISTS (SELECT *
 					FROM film  f2
-					WHERE f2.`length`> f1.`length`);
+					WHERE f2.`length`< f1.`length`);
 					
 					
 SELECT title, length 
