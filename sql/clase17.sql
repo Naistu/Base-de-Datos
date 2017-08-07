@@ -15,7 +15,7 @@ WHERE MATCH(productline) AGAINST('Classic,Vintage');
 
 -- agrego index full a productsname
 ALTER TABLE products 
-ADD FULLTEXT(productName);
+ADD FULLTEXT(productName);	
 
 SELECT productName, productline
 FROM products
