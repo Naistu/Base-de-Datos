@@ -55,6 +55,9 @@ UPDATE employee set employeeNumber = employeeNumber - 20;
 UPDATE employee set employeeNumber = employeeNumber + 20;
 
 -- ejercicio 3
+ALTER TABLE employees
+	ADD `age` INT NOT NULL CHECK (age >=16 AND age <=70);
+
 -- ejercicio 4
 -- ejercicio 5
 -- ejercicio 6

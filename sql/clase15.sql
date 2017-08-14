@@ -57,3 +57,6 @@ JOIN film USING (film_id)
 GROUP BY actor_id
 SELECT *
 FROM actor_information
+
+-- ejercicio 5
+-- ejercicio 6

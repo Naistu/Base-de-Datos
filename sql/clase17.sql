@@ -43,3 +43,6 @@ SELECT last_name
 FROM actor
 WHERE last_name 
 LIKE "%w"
+
+
+-- ejercicio 3
