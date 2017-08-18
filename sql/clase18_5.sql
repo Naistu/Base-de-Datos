@@ -21,48 +21,48 @@ SELECT Laspelis(5,2);
 
 -- ejercicio 2
 
-CREATE PROCEDURE LosNombres (IN p_country VARCHAR(10), OUT name_list VARCHAR(4000))
+DROP PROCEDURE IF EXISTS sakila.Losnombres ;
+
+DELIMITER $$
+$$
+CREATE PROCEDURE Losnombres (IN country VARCHAR(100),INOUT names_list TEXT)
 BEGIN
+	
 	DECLARE v_finished INTEGER DEFAULT 0;
-	DECLARE v_name VARCHAR(100) DEFAULT "";
-	DECLARE v_second VARCHAR(100) DEFAULT "";
-
-    -- declare cursor for names
-    DEClARE nombres_c CURSOR FOR 
-    SELECT first_name, last_name
-    FROM customer
-    INNER JOIN address USING(address_id)
-    INNER JOIN city USING(city_id)
-    INNER JOIN country USING(country_id)
-    WHERE country=p_country;
-
-    -- declare NOT FOUND handler
+	DECLARE v_nombre varchar(100) DEFAULT "";
+	DECLARE v_apellido varchar(100) DEFAULT "";
+	
+	DECLARE nombres_c CURSOR FOR 
+        SELECT first_name,last_name FROM customer
+        INNER JOIN address USING(address_id)
+        INNER JOIN city USING(city_id)
+        INNER JOIN country USING(country_id)
+        WHERE country = country;
+   	
     DECLARE CONTINUE HANDLER 
         FOR NOT FOUND SET v_finished = 1;
+	
+	OPEN nombres_c;
+	
+	get_names: LOOP
 
-    OPEN nombres_c;
-
-    get_name: LOOP
-
-        FETCH nombres_c INTO v_name,v_second;
+        FETCH nombres_c INTO v_nombre,v_apellido;
 
         IF v_finished = 1 THEN 
-            LEAVE get_name;
+            LEAVE get_names;
         END IF;
 
-        -- build name list
-        SET name_list = CONCAT(v_name," ",v_second," ; ",name_list);
+        SET names_list = CONCAT(" ",v_nombre," ",v_apellido," ; ",names_list);
 
-    END LOOP get_name;
+    END LOOP get_names;
 
     CLOSE nombres_c;
+END $$
+DELIMITER ;
 
-END
-
-SET @name_list ="";
-CALL Losnombres('Francia',@name_list);
-SELECT @name_list;
-
+SET @names_list = "";
+CALL Losnombres('Francia',@names_list);
+SELECT @names_list;
 
 
 -- ejercicio 3
