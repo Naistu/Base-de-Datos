@@ -55,7 +55,7 @@ BEGIN
 
     END LOOP get_name;
 
-    CLOSE nombre_C;
+    CLOSE nombres_c;
 
 END
 
