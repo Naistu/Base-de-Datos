@@ -29,3 +29,8 @@ CREATE PROCEDURE classicmodels.test_mysql_loop()
  $$
 DELIMITER ;
 CALL test_mysql_loop();
+
+-- 18.3
+SHOW PROCEDURE STATUS WHERE db = 'classicmodels';
+-- toda la info del sp
+SHOW CREATE PROCEDURE GetAllProducts;
