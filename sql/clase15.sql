@@ -1,6 +1,7 @@
 -- ejercico 1
 
 -- CREATE OR REPLACE VIEW list_of_customers AS
+CREATE VIEW list_of_customers AS
 SELECT customer_id,CONCAT_WS(' ',First_name,Last_Name ) AS 'Name', address, postal_code AS 'Zip Code', phone, city, country, store_id,
 CASE active
    WHEN "1" THEN "Active"
@@ -15,6 +16,9 @@ INNER JOIN store USING(store_id);
 
 SELECT * FROM list_of_customers;
 
+DROP VIEW IF EXISTS list_of_customers;
+
+
 -- ejercicio 2
 -- CREATE OR REPLACE VIEW film_details AS
 SELECT film_id,title, description,  category.name,  payment.amount,film.`length`, film.rating, GROUP_CONCAT(first_name)
@@ -27,11 +31,12 @@ INNER JOIN inventory USING(film_id)
 INNER JOIN rental USING(inventory_id)
 INNER JOIN payment USING(rental_id)
 GROUP BY 1,2,3,4,5,6,7;
-1				
+	
 
 -- ejercicio 3
 
-DROP VIEW IF EXISTS sales_by_film_category2
+DROP VIEW IF EXISTS sales_by_film_category2;
+
 CREATE VIEW sales_by_film_category2 AS
 SELECT name, SUM(amount) AS total_rental
 FROM category
@@ -50,11 +55,12 @@ FROM sales_by_film_category2
 DROP VIEW IF EXISTS actor_information
 
 CREATE VIEW actor_information AS
-SELECT actor_id, CONCAT_WS(' ', first_name, last_name) AS actor, COUNT(film.film_id) AS total_films
+SELECT actor_id, CONCAT_WS(' ', first_name, last_name) AS actor, COUNT(film.film_id) AS actuaciones
 FROM actor
 JOIN film_actor USING (actor_id)
 JOIN film USING (film_id)
 GROUP BY actor_id
+
 SELECT *
 FROM actor_information
 

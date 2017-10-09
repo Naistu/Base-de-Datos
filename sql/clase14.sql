@@ -19,7 +19,8 @@ CASE
 	WHEN rating = 'G' THEN 'Tamo activo perro .'
 END AS rating_description
   FROM film
-	INNER JOIN `language` USING (language_id);
+INNER JOIN `language` USING (language_id);
+	
 	
 -- Ejercicio 3
 	

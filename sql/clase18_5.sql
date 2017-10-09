@@ -14,7 +14,22 @@ END
 
 SELECT Laspelis(5,2);
 
+CREATE FUNCTION GetCountOfFilmByID(p_id_film INT, p_id_store INT) RETURNS INT(11)
+	DETERMINISTIC
+BEGIN
+	DECLARE amount_films INT(11)
+	
+	SELECT COUNT(*) INTO amount_films
+	FROM film
+	INNER JOIN inventory USING(film_id)
+	INNER JOIN store USING(store_id)
+	WHERE film_id = p_id_film
+	AND store_id = p_id_store
+	
+	RETURN (amount_films)
+END;
 
+SELECT GetCountOfFilmByID(1,2);
 
 
 
@@ -25,7 +40,7 @@ DROP PROCEDURE IF EXISTS sakila.Losnombres ;
 
 DELIMITER $$
 $$
-CREATE PROCEDURE Losnombres (IN country VARCHAR(100),INOUT names_list TEXT)
+CREATE PROCEDURE Losnombres (IN country VARCHAR(100),OUT names_list TEXT)
 BEGIN
 	
 	DECLARE v_finished INTEGER DEFAULT 0;

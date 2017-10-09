@@ -1,0 +1,100 @@
+<title>Redis</title>
+<h1>1 - Install Redis with docker. </h1>
+<h3>Add port mapping and volumen</h3>
+<p>> sudo docker load -i redis.tar</p>
+<p>> sudo docker run --name myredis -p 6379:6379 -v /tmp/data:/data -d redis </p>
+<h1>2 - Connect to Redis and run basic commands</h1>
+<p>> sudo docker start myredis</p>
+<h3>Write the command to connect using the cli</h3>
+<p>> sudo docker run -it --link myredis:redis --rm redis redis-cli -h redis -p 6379</p>
+<h3>Do a ping</h3>
+<p>> PING "2018AzulYAmarillo"</p>
+<h3>Get config values</h3>
+<p>> config get *max-*-entries*</p>
+<h1>3 - Write examples with string</h1>
+<h3>SET key value</h3>
+<p>set roman "Ultimo 10"</p>
+<h3>GET key</h3>
+<p>get roman</p>
+<p>"Ultimo 10"</p>
+<h1>4 - Write examples with hashes</h1>
+<p>redis:6379> HMSET LaPachoneta name "auto cuyo duenio es el pachi"<br> 
+OK<br>
+redis:6379> HGETALL LaPachoneta<br>
+1) "name"<br>
+2) "auto cuyo dueño es el pachi"<br>
+</p>
+
+<h1>5 - Write examples with Lists</h1>
+<p>redis:6379> LPUSH Top3 Benedettogol<br> 
+(integer) 1<br> 
+redis:6379> LPUSH Top3 pintita<br> 
+(integer) 2<br> 
+redis:6379> LPUSH Top3 Pavon<br> 
+(integer) 3<br> 
+redis:6379> LRANGE tutorials 0 10<br>  
+1) "Benedettogol"<br> 
+2) "pintita"<br> 
+3) "Pavon"</p>
+<h1>6 - Write examples with Sets</h1>
+<p>redis:6379> SADD tutorials redis<br>  
+(integer) 1<br>  
+redis:6379> SADD tutorials mongodb<br>  
+(integer) 1 <br> 
+redis:6379> SADD tutorials mysql <br> 
+(integer) 1 <br> 
+redis:6379> SADD tutorials mysql <br> 
+(integer) 0 <br> 
+redis:6379> SMEMBERS tutorials  <br> 
+1) "mysql" <br> 
+2) "mongodb" <br> 
+3) "redis"</p>
+<h1>7 - Write examples with Sorted Sets</h1>
+<p>redis 127.0.0.1:6379> ZADD tutorials 1 redis<br> 
+(integer) 1<br> 
+redis 127.0.0.1:6379> ZADD tutorials 2 mongodb<br> 
+(integer) 1<br> 
+redis 127.0.0.1:6379> ZADD tutorials 3 mysql<br> 
+(integer) 1<br> 
+redis 127.0.0.1:6379> ZADD tutorials 3 mysql<br> 
+(integer) 0<br> 
+redis 127.0.0.1:6379> ZADD tutorials 4 mysql<br> 
+(integer) 0<br> 
+redis 127.0.0.1:6379> ZRANGE tutorials 0 10 WITHSCORES<br>  
+1) "redis"<br> 
+2) "1"<br> 
+3) "mongodb"<br> 
+4) "2"<br> 
+5) "mysql"<br> 
+6) "4" </p>
+<h1>Write examples using Publish Subscribe</h1>
+<h3>Suscribe to a Channel</h3>
+<p>redis:6379> SUBSCRIBE redisChat<br>   
+1) "subscribe"<br> 
+2) "redisChat"<br> 
+3) (integer) 1 </p>
+<h3>Publish to that Channel</h3>
+<p>redis:6379> PUBLISH redisChat "Redis is a great caching technique"<br>  
+(integer) 1<br>  
+redis:6379> PUBLISH redisChat "Learn redis by tutorials point"<br>  
+(integer) 1<br>   
+1) "message"<br> 
+2) "redisChat"<br> 
+3) "Redis is a great caching technique"<br> 
+1) "message"<br> 
+2) "redisChat"<br> 
+3) "Learn redis by tutorials point" </p>
+<h3>9 - Write examples using Transactions</h3>
+<p>redis:6379> MULTI<br> 
+OK<br> 
+redis:6379> SET tutorial redis<br> 
+QUEUED<br> 
+redis:6379> GET tutorial<br> 
+QUEUED<br> 
+redis:6379> INCR visitors<br> 
+QUEUED<br> 
+redis:6379> EXEC<br>  
+1) OK<br> 
+2) "redis"<br> 
+3) (integer) 1 </p>
+<h3>10 - Investigate backups</h3>
