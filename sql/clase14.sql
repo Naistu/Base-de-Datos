@@ -46,6 +46,9 @@ WHERE MONTHNAME(rental.rental_date) LIKE 'May'
    
 -- Ejercicio 5
 
+-- CAST is part of the ANSI-SQL specification; whereas, CONVERT is not.  In fact, CONVERT is SQL implementation specific.
+-- CONVERT differences lie in that it accepts an optional style parameter which is used for formatting.
+
 SELECT CAST(last_update AS DATE) as only_date
 FROM rental;
 
