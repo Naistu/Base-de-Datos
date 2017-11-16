@@ -81,3 +81,26 @@ SELECT @names_list;
 
 
 -- ejercicio 3
+
+-- Inventory_in_stock
+
+-- This function gets the number of rentals from a certain entry in the inventory and makes some checks.
+-- Esta función saca el número de alquileres de una entrada determinada y revisa si se alquilo, entonces la entrada del inventario está en stock.
+--  Si se ha alquilado, verifica si aún no se ha devuelto.Si la entrada del inventario no ha sido devuelta, entonces no está en stock (la función devuelve 0)
+-- de lo contrario si se encuentra en stock (la funcion devuelve 1).
+
+-- Debido a que esta película no se ha devuelto todavía, no está disponible. Entonces la función devuelve 0..
+SELECT inventory_in_stock(4106);
+
+-- Esta película está en stock, por lo que la función devuelve 1.
+SELECT inventory_in_stock(327);
+
+
+
+-- Film_in_stock
+
+-- La funcion recive el id de la pelicula y del store, de ahi muestra el numero de copias de esa pelicula que estan en stock en ese store.
+-- Lo logra al verificar el estado de stock de las entradas en el inventario con la función inventory_in_stock.
+
+CALL film_in_stock(167, 1, @film_stock);
+SELECT @film_stock;

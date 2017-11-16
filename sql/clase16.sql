@@ -59,6 +59,47 @@ UPDATE employee set employeeNumber = employeeNumber + 20;
 ALTER TABLE employees
 	ADD `age` INT NOT NULL CHECK (age >=16 AND age <=70);
 
--- ejercicio 4
 -- ejercicio 5
--- ejercicio 6
+
+ALTER TABLE employees_audit ADD lastUpdate DATETIME DEFAULT NULL;
+ALTER TABLE employees_audit ADD lastUpdateUser VARCHAR(32) DEFAULT  "";
+DELIMITER $$
+CREATE TRIGGER employee_lastUpdate 
+    BEFORE UPDATE ON employees
+    FOR EACH ROW 
+BEGIN
+    INSERT INTO employees_audit
+    SET action = 'update',
+    employeeNumber = OLD.employeeNumber,
+    lastname = OLD.lastname,
+    lastUpdateUser = SELECT CURRENT_USER()
+    lastUpdate = NOW();
+     
+END$$
+DELIMITER ;
+DESCRIBE employees_audit;
+
+-- ejercicio 6  
+
+-- ins_film inserta un nuevo film_text
+BEGIN
+    INSERT INTO film_text (film_id, title, description)
+        VALUES (new.film_id, new.title, new.description);
+END
+-- upd_film hace un update a un film_text ya existente
+
+BEGIN
+	IF (old.title != new.title) OR (old.description != new.description) OR (old.film_id != new.film_id)
+	THEN
+	    UPDATE film_text
+	        SET title=new.title,
+	            description=new.description,
+	            film_id=new.film_id
+	    WHERE film_id=old.film_id;
+	END IF;
+END
+-- del_film elimina el film_text de la pelicula eliminada
+
+BEGIN
+    DELETE FROM film_text WHERE film_id = old.film_id;
+END

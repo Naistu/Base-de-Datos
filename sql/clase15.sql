@@ -65,4 +65,23 @@ SELECT *
 FROM actor_information
 
 -- ejercicio 5
+-- This view fetches values from table actor, and joins them whenever it can with values from tables film_actor, film_category
+-- and category. This meaning that they will only be joined in case the actor has acted in a film.
+-- - la vista actor_info recupera valores de la tabla actor, y los une siempre que puede con los valores de las tablas film_actor, film_category
+-- y categoría. Osea cuando el actor haya actuado en la pelicula
+-- Muestra la info en 4 columnas. 
+-- las primeras 3 datos basicos del actor
+-- La cuarta muestra las peliculas en la cual el actor haya actuado.
+ 
+-- La query logra esto mediante la concatenación de cada categoria con el grupo de películas que froman parte de esa categoria, después de eso, concatenando los grupos de categorías con sus películas juntas.
+
 -- ejercicio 6
+-- A materialized view is a replica of a target master from a single point in time. 
+-- The master can be either a master table at a master site or a master materialized view at a materialized view site.
+-- Whereas in multimaster replication tables are continuously updated by other master sites, materialized views are updated from one or more masters through individual batch updates,
+-- known as a refreshes, from a single master site or master materialized view site
+-- You can use materialized views to achieve one or more of the following goals:
+--    *Ease Network Loads
+--    *Create a Mass Deployment Environment
+--    *Enable Data Subsetting
+ --   *Enable Disconnected Computing
