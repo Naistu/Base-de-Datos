@@ -23,8 +23,12 @@ CREATE TABLE film_actor(
 	PRIMARY KEY (film_id, actor_id)
 	);	
 	
-ALTER TABLE film
-	CHANGE  release_year YEAR DEFAULT;	
+ALTER TABLE film ADD column
+last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+
+ALTER TABLE ADD
+CONSTRAINT fk_film_actor_film FOREIGN KEY (film_id) REFERENCES film (film_id) ON DELETE RESTRICT ON UPDATE CASCADE
 	
 INSERT INTO imdb.actor
 ( first_name, last_name)
