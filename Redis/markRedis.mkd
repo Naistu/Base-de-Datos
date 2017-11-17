@@ -17,12 +17,44 @@
 <h3>GET key</h3>
 <p>get roman</p>
 <p>"Ultimo 10"</p>
+<br>
+<p>redis:6379> SET cool 'Yeah'</p>
+<p>OK</p>
+<p>redis:6379> GET cool</p>
+<p>"Yeah"</p>
+<br>
+<p>redis:6379> set player 'messi'</p>
+<p>OK</p>
+<p>redis:6379> STRLEN player</p>
+<p>(integer) 4</p>
+
+
 <h1>4 - Write examples with hashes</h1>
 <p>redis:6379> HMSET LaPachoneta name "auto cuyo duenio es el pachi"<br> 
 OK<br>
 redis:6379> HGETALL LaPachoneta<br>
 1) "name"<br>
 2) "auto cuyo dueño es el pachi"<br>
+</p>
+<br>
+<p>redis:6379> HMSET firsthash nombre pachi posicion '3' goles 2<br>
+OK<br>
+redis:6379> HGETALL firsthash<br>
+1) "nombre"<br>
+2) "pachi"<br>
+3) "posicion"<br>
+4) "3"<br>
+5) "goles"<br>
+6) "2"<br>
+</p>
+<br>
+<p>redis:6379> HKEYS firsthash<br>
+1) "nombre"<br>
+2) "posicion"<br>
+</p>
+<p>redis:6379> HVALS firsthash<br>
+1) "pachi"<br>
+2) "3"<br>
 </p>
 
 <h1>5 - Write examples with Lists</h1>
@@ -36,6 +68,23 @@ redis:6379> LRANGE tutorials 0 10<br>
 1) "Benedettogol"<br> 
 2) "pintita"<br> 
 3) "Pavon"</p>
+
+<p>redis:6379> RPUSH listiya A<br> 
+(integer) 1<br> 
+redis:6379> RPUSH listiya B<br> 
+(integer) 2<br> 
+redis:6379> LPUSH listiya first<br> 
+(integer) 3<br> 
+redis:6379> lrange listiya 0 -1<br> 
+1) "first"<br> 
+2) "A"<br> 
+3) "B"<br> 
+</p>
+
+<p>redis:6379> LLEN listiya<br> 
+(integer) 3<br> 
+</p>
+
 <h1>6 - Write examples with Sets</h1>
 <p>redis:6379> SADD tutorials redis<br>  
 (integer) 1<br>  
@@ -49,6 +98,21 @@ redis:6379> SMEMBERS tutorials  <br>
 1) "mysql" <br> 
 2) "mongodb" <br> 
 3) "redis"</p>
+
+<p>redis:6379> SCARD tutorials<br>
+(integer) 3<br>
+</p>
+
+<p>redis:6379> SADD tutorials2 Django<br>
+(integer) 1<br>
+</p>
+<p>redis:6379> SUNION tutorials tutorials2<br>
+1) "mysql"<br>
+2) "mongodb"<br>
+3) "redis"<br>
+4) "Django"<br>
+</p>
+
 <h1>7 - Write examples with Sorted Sets</h1>
 <p>redis 127.0.0.1:6379> ZADD tutorials 1 redis<br> 
 (integer) 1<br> 
@@ -67,7 +131,14 @@ redis 127.0.0.1:6379> ZRANGE tutorials 0 10 WITHSCORES<br>
 4) "2"<br> 
 5) "mysql"<br> 
 6) "4" </p>
-<h1>Write examples using Publish Subscribe</h1>
+
+<p>redis:6379> ZRANK tutorials<br>
+(integer) 4<br>
+
+<p>redis:6379> ZRANK tutorials mongodb<br>
+(integer) 2<br>
+
+<h1>8 - Write examples using Publish Subscribe</h1>
 <h3>Suscribe to a Channel</h3>
 <p>redis:6379> SUBSCRIBE redisChat<br>   
 1) "subscribe"<br> 
@@ -84,6 +155,7 @@ redis:6379> PUBLISH redisChat "Learn redis by tutorials point"<br>
 1) "message"<br> 
 2) "redisChat"<br> 
 3) "Learn redis by tutorials point" </p>
+
 <h3>9 - Write examples using Transactions</h3>
 <p>redis:6379> MULTI<br> 
 OK<br> 
@@ -97,4 +169,219 @@ redis:6379> EXEC<br>
 1) OK<br> 
 2) "redis"<br> 
 3) (integer) 1 </p>
+
 <h3>10 - Investigate backups</h3>
+<p> Se puede hacer un backup en redis tenes que ir a la carpeta donde estan los datos y copiar el archivo .rdb (Redis no guarda todo al instante en esa base asique es posible que no este actualizado el backup podes usar el camando save antes del backup)
+    Para automatizar esto hay un programa llamado rdiff-backup que podes poner en un cron para que se ejecute.<br>
+Este comando creara un archivo dump.rdb en tu directorio de Redis.<br>
+redis:6379> SAVE<br>
+OK<br>
+Para restablacer los datos de Redis, el archivo de backup(dump.rdb) lo movemos dentro del directorio de Redis, luego iniciamos el server. Si no sabemos donde esta nuestro directorio de Redis utilizamos el comando CONFIG:<br>
+redis:6379> CONFIG get dir<br>
+1) "dir"<br>
+2) "/data"<br>
+
+<h3>11 - Investigate Benchmarks - Run some</h3>
+<p>Una buena herramienta para poder hacer un benchmark es redis-benchmark que viene en el paquete de redis-tools (se descarga sudo apt-get install redis-tools) donde podes pasarle el numero de veces que ejecute los comandos con el modificador -n seguido del numero de veces que queres (ej: redis-benchmark -n 100000) con el modificador --csv te devuelve el ouput en un csv. El ouput de de mi redis cuando ejecute este comando es este<br> 
+====== PING_INLINE ======<br>
+  100000 requests completed in 1.43 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+99.77% <= 1 milliseconds<br>
+99.90% <= 2 milliseconds<br>
+99.95% <= 3 milliseconds<br>
+99.95% <= 4 milliseconds<br>
+99.95% <= 7 milliseconds<br>
+99.95% <= 24 milliseconds<br>
+99.96% <= 25 milliseconds<br>
+99.98% <= 50 milliseconds<br>
+99.99% <= 51 milliseconds<br>
+100.00% <= 51 milliseconds<br>
+69881.20 requests per second<br>
+
+====== PING_BULK ======<br>
+  100000 requests completed in 1.40 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+99.65% <= 1 milliseconds<br>
+100.00% <= 2 milliseconds<br>
+100.00% <= 2 milliseconds<br>
+71479.62 requests per second<br>
+<br>
+====== SET ======<br>
+  100000 requests completed in 1.43 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+99.54% <= 1 milliseconds<br>
+99.96% <= 2 milliseconds<br>
+100.00% <= 4 milliseconds<br>
+100.00% <= 7 milliseconds<br>
+70077.09 requests per second<br>
+<br>
+====== GET ======<br>
+  100000 requests completed in 1.39 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+99.69% <= 1 milliseconds<br>
+99.98% <= 2 milliseconds<br>
+100.00% <= 3 milliseconds<br>
+71736.01 requests per second<br>
+<br>
+====== INCR ======<br>
+  100000 requests completed in 1.41 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+99.43% <= 1 milliseconds<br>
+100.00% <= 3 milliseconds<br>
+100.00% <= 4 milliseconds<br>
+100.00% <= 6 milliseconds<br>
+70821.53 requests per second<br>
+<br>
+====== LPUSH ======<br>
+  100000 requests completed in 1.46 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+99.19% <= 1 milliseconds<br>
+100.00% <= 2 milliseconds<br>
+100.00% <= 2 milliseconds<br>
+68634.18 requests per second<br>
+<br>
+====== LPOP ======<br>
+  100000 requests completed in 1.46 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+99.02% <= 1 milliseconds<br>
+99.98% <= 2 milliseconds<br>
+100.00% <= 2 milliseconds<br>
+68306.01 requests per second<br>
+<br>
+====== SADD ======<br>
+  100000 requests completed in 1.45 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+98.34% <= 1 milliseconds<br>
+99.99% <= 2 milliseconds<br>
+99.99% <= 3 milliseconds<br>
+100.00% <= 4 milliseconds<br>
+100.00% <= 5 milliseconds<br>
+69013.11 requests per second<br>
+<br>
+====== SPOP ======<br>
+  100000 requests completed in 1.41 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+99.13% <= 1 milliseconds<br>
+100.00% <= 2 milliseconds<br>
+100.00% <= 3 milliseconds<br>
+70671.38 requests per second<br>
+<br>
+====== LPUSH (needed to benchmark LRANGE) ======<br>
+  100000 requests completed in 1.49 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+97.94% <= 1 milliseconds<br>
+99.93% <= 2 milliseconds<br>
+99.98% <= 3 milliseconds<br>
+100.00% <= 3 milliseconds<br>
+66979.23 requests per second<br>
+<br>
+====== LRANGE_100 (first 100 elements) ======<br>
+  100000 requests completed in 2.41 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+84.83% <= 1 milliseconds<br>
+99.78% <= 2 milliseconds<br>
+99.98% <= 3 milliseconds<br>
+100.00% <= 3 milliseconds<br>
+41442.19 requests per second<br>
+<br>
+====== LRANGE_300 (first 300 elements) ======<br>
+  100000 requests completed in 5.40 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+0.02% <= 1 milliseconds<br>
+98.23% <= 2 milliseconds<br>
+99.94% <= 3 milliseconds<br>
+100.00% <= 4 milliseconds<br>
+100.00% <= 4 milliseconds<br>
+18504.81 requests per second<br>
+<br>
+====== LRANGE_500 (first 450 elements) ======<br>
+  100000 requests completed in 7.65 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+0.00% <= 1 milliseconds<br>
+81.07% <= 2 milliseconds<br>
+98.68% <= 3 milliseconds<br>
+99.87% <= 4 milliseconds<br>
+99.97% <= 5 milliseconds<br>
+100.00% <= 6 milliseconds<br>
+100.00% <= 7 milliseconds<br>
+13075.31 requests per second<br>
+<br>
+====== LRANGE_600 (first 600 elements) ======<br>
+  100000 requests completed in 10.51 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+0.00% <= 1 milliseconds<br>
+0.07% <= 2 milliseconds<br>
+87.41% <= 3 milliseconds<br>
+98.99% <= 4 milliseconds<br>
+99.93% <= 5 milliseconds<br>
+99.98% <= 6 milliseconds<br>
+99.99% <= 7 milliseconds<br>
+100.00% <= 7 milliseconds<br>
+9512.94 requests per second<br>
+<br>
+====== MSET (10 keys) ======<br>
+  100000 requests completed in 1.71 seconds<br>
+  50 parallel clients<br>
+  3 bytes payload<br>
+  keep alive: 1<br>
+<br>
+92.21% <= 1 milliseconds<br>
+99.82% <= 2 milliseconds<br>
+99.95% <= 3 milliseconds<br>
+99.99% <= 4 milliseconds<br>
+100.00% <= 4 milliseconds<br>
+58548.01 requests per second<br>
+</p>
+
+<h3></h3>
+<p>redis-py (https://github.com/andymccurdy/redis-py)<br>
+Clone al repo y ejecutar el setup.py<br>
+<br>
+import redis<br>
+c = redis.StrictRedis(host='localhost', port=6379, db=0) <br>
+c.set('Boca', 'Campeon libertadores 2018')<br>
+True<br>
+c.get('Boca')<br>
+'Campeon libertadores 2018'<br>
