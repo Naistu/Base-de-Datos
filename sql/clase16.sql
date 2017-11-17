@@ -59,6 +59,10 @@ UPDATE employee set employeeNumber = employeeNumber + 20;
 ALTER TABLE employees
 	ADD `age` INT NOT NULL CHECK (age >=16 AND age <=70);
 
+-- ejercicio 4
+-- las tablas actor y film tienen su propia primary key(actor_id & film_id)
+-- Dentro de la tabla film_actor, tenemos ambas primary keys, entonces de esta forma podemos relacionar la tabla actor con la tabla film
+
 -- ejercicio 5
 
 ALTER TABLE employees_audit ADD lastUpdate DATETIME DEFAULT NULL;

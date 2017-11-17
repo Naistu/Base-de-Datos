@@ -84,8 +84,6 @@ SELECT @names_list;
 
 -- Inventory_in_stock
 
-
--- This function gets the number of rentals from a certain entry in the inventory and makes some checks.
 -- Esta función saca el número de alquileres de una entrada determinada y revisa si se alquilo, entonces la entrada del inventario está en stock.
 --  Si se ha alquilado, verifica si aún no se ha devuelto.Si la entrada del inventario no ha sido devuelta, entonces no está en stock (la función devuelve 0)
 -- de lo contrario si se encuentra en stock (la funcion devuelve 1).
